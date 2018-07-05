@@ -36,6 +36,12 @@ class ParameterException(APIException):
     msg = 'invalid parameter'
     error_code = 1000
 
+
+class ServerException(APIException):
+    code = 500
+    msg = 'sorry, we made a mistake (*￣︶￣)!'
+    error_code = 999
+
 # class ClientTypeError(APIException):
 #     code = 400
 #     msg = 'client is invalid'
