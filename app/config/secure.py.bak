@@ -4,3 +4,9 @@
 """
 
 __author__ = 'Cphayim'
+
+SECRET_KEY = '密钥'
+WTF_CSRF_ENABLED = False
+
+# 数据库配置
+SQLALCHEMY_DATABASE_URI = 'mysql+cymysql://数据库账号:数据库密码@127.0.0.1/数据库名'
