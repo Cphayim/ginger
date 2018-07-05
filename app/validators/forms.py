@@ -21,6 +21,13 @@ class ClientTypeForm(BaseForm):
             DataRequired()
         ]
     )
+    account = StringField(
+        validators=[
+            DataRequired(),
+            Length(min=5, max=32)
+        ]
+    )
+    secret = StringField()
 
     def validate_type(self, value):
         try:

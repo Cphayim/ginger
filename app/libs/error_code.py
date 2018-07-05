@@ -37,7 +37,28 @@ class ParameterException(APIException):
     error_code = 1000
 
 
+class AuthException(APIException):
+    """
+    授权异常
+    """
+    code = 401
+    msg = 'authorization failed'
+    error_code = 1005
+
+
+class NotFoundException(APIException):
+    """
+    找不到资源异常
+    """
+    code = 404
+    msg = 'the resource are not_found 0__0...'
+    error_code = 1001
+
+
 class ServerException(APIException):
+    """
+    服务器未知异常
+    """
     code = 500
     msg = 'sorry, we made a mistake (*￣︶￣)!'
     error_code = 999

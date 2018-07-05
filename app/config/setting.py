@@ -6,3 +6,5 @@
 __author__ = 'Cphayim'
 
 DEBUG = True
+
+TOKEN_EXPIRATION = 14 * 24 * 3600
