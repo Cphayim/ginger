@@ -8,6 +8,8 @@ from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy as _SQLAlchemy, BaseQuery
 from sqlalchemy import Column, Integer, SmallInteger
 
+from app.libs.error_code import NotFoundException
+
 __author__ = 'Cphayim'
 
 
@@ -32,9 +34,11 @@ class SQLAlchemy(_SQLAlchemy):
 
 # 继承 flask-sqlalchemy 的 BaseQuery 类，重写 filter_by 方法
 class Query(BaseQuery):
+
     def filter_by(self, **kwargs):
         """
-        自定义 filter_by，查询未被标记删除的数据
+        重写 filter_by
+        默认查询未被标记删除的数据
         :param kwargs:
         :return:
         """
@@ -42,6 +46,27 @@ class Query(BaseQuery):
             kwargs['status'] = 1
 
         return super(Query, self).filter_by(**kwargs)
+
+    def get_or_404(self, ident):
+        """
+        重写 get_or_404
+        :param ident: 主键
+        :return:
+        """
+        rv = self.get(ident)
+        if not rv:
+            raise NotFoundException()
+        return rv
+
+    def first_or_404(self):
+        """
+        重写 first_or_404
+        :return:
+        """
+        rv = self.first()
+        if not rv:
+            raise NotFoundException()
+        return rv
 
 
 # 初始化 SQLAlchemy，指定自定义的 Query 类

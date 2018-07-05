@@ -43,9 +43,7 @@ class User(Base):
         :param password: 密码
         :return:
         """
-        user = User.query.filter_by(email=email).first()
-        if not user:
-            raise NotFoundException(msg='user not found')
+        user = User.query.filter_by(email=email).first_or_404()
         if not user.check_password(password):
             raise AuthException()
 
