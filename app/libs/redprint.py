@@ -42,7 +42,7 @@ class Redprint:
 
         for f, rule, options in self.mound:
             # 如果 rule 不是以 '/' 开头，补全
-            if rule and rule is not '/':
+            if rule and rule[0] is not '/':
                 rule = '/' + rule
 
             # 在开头补上红图的 url_prefix
