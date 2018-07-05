@@ -26,7 +26,7 @@ class Redprint:
 
         def decorator(f):
             # 将视图函数和路由配置保存到 mound 中
-            self.mound.append((f, rule, options))
+            self.mound.append((f, str(rule), options))
             return f
 
         return decorator
@@ -42,7 +42,7 @@ class Redprint:
 
         for f, rule, options in self.mound:
             # 如果 rule 不是以 '/' 开头，补全
-            if rule[0] is not '/':
+            if rule and rule is not '/':
                 rule = '/' + rule
 
             # 在开头补上红图的 url_prefix
