@@ -86,6 +86,9 @@ class Base(db.Model):
     def __init__(self):
         self.create_time = int(datetime.now().timestamp())
 
+    def __getitem__(self, item):
+        return getattr(self, item)
+
     def set_attrs(self, attrs_dict):
         """
         动态为对象设置属性
