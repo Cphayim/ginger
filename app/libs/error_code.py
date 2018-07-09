@@ -21,11 +21,21 @@ __author__ = 'Cphayim'
 
 class Success(APIException):
     """
-    成功响应
+    提交(POST/PUT)成功
     """
     code = 201
     msg = 'ok'
     error_code = 0
+
+
+class DeleteSuccess(Success):
+    """
+    删除(DELETE)成功
+    """
+    # 这里不使用标准 RESTFul 中规定的 204 状态码，因为 204 状态码不会携带任何响应体
+    # 为便于前端判断，这里使用 code 为 202，error_code 为 1 表示删除成功
+    code = 202
+    error_code = 1
 
 
 class ParameterException(APIException):
