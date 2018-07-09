@@ -23,4 +23,5 @@ htmlcov/
 .coverage.*
 *,cover
 
+create_admin
 app/config/secure.py
