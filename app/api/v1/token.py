@@ -51,5 +51,6 @@ def generate_auth_token(uid, ac_type, scope=None, expiration=7200):
     )
     return s.dumps({
         'uid': uid,
-        'type': ac_type.value  # 枚举值.value
+        'type': ac_type.value,  # 枚举值.value
+        'scope': scope
     })

@@ -49,5 +49,5 @@ class Redprint:
             rule = url_prefix + rule
 
             # 将视图函数及路由规则添加到红图对应的蓝图上
-            endpoint = options.pop('endpoint', f.__name__)
+            endpoint = self.name + '+' + options.pop('endpoint', f.__name__)
             bp.add_url_rule(rule, endpoint, f, **options)

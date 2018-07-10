@@ -6,7 +6,7 @@
 from sqlalchemy import Column, Integer, String, SmallInteger
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from app.libs.error_code import AuthException
+from app.libs.error_code import AuthFailed
 from app.models.base import Base, db
 
 __author__ = 'Cphayim'
@@ -49,9 +49,9 @@ class User(Base):
         """
         user = User.query.filter_by(email=email).first_or_404()
         if not user.check_password(password):
-            raise AuthException()
-
-        return {'uid': user.id, 'scope': ''}
+            raise AuthFailed()
+        scope = 'AdminScope' if user.auth == 2 else 'UserScope'
+        return {'uid': user.id, 'scope': scope}
 
     def check_password(self, raw):
         """

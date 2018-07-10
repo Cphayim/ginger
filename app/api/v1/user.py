@@ -4,7 +4,7 @@
 """
 from flask import jsonify, g
 
-from app.libs.error_code import NotFoundException, DeleteSuccess, AuthException
+from app.libs.error_code import NotFound, DeleteSuccess, AuthFailed
 from app.libs.redprint import Redprint
 from app.libs.token_auth import auth
 from app.models.base import db
@@ -17,48 +17,64 @@ api = Redprint('user', url_prefix='/user')
 
 @api.route('/<int:uid>', methods=['GET'])
 @auth.login_required
-def get_user(uid):
+def super_get_user(uid):
     """
-    查询用户
+    查询指定用户 - 管理员接口
     :param uid: 用户 id
     :return:
     """
-    user = User.query.get_or_404(uid)
+    user = User.query.filter_by(id=uid).first_or_404()
     return jsonify(user)
 
 
-# @api.route('', methods=['DELETE'])
-# @auth.login_required
-# def delete_user():
-#     """
-#     删除用户
-#     :param uid: 用户 id
-#     :return:
-#     """
-#     # 防止超权，用户只能删除自己
-#     uid = g.user.uid
-#     with db.auto_commit():
-#         user = User.query.filter_by(id=uid).first_or_404()
-#         user.delete()
-#     return DeleteSuccess()
+@api.route('', methods=['GET'])
+@auth.login_required
+def get_user():
+    """
+    查询当前用户
+    :return:
+    """
+    uid = g.user.uid
+    user = User.query.filter_by(id=uid).first_or_404()
+    return jsonify(user)
 
-# 保持 API 格式统一的另一种写法
+
 @api.route('/<int:uid>', methods=['DELETE'])
 @auth.login_required
-def delete_user(uid):
-    # 防止超权，用户只能删除自己
-    current_uid = g.user.uid
-    if uid != current_uid:
-        raise AuthException()
+def super_delete_user(uid):
+    """
+    删除指定用户 - 管理员接口
+    :param uid: 用户 id
+    :return:
+    """
     with db.auto_commit():
         user = User.query.filter_by(id=uid).first_or_404()
         user.delete()
     return DeleteSuccess()
 
 
-@api.route('/<int:uid>', methods=['UPDATE'])
+@api.route('', methods=['DELETE'])
+@auth.login_required
+def delete_user():
+    """
+    删除当前用户
+    :return:
+    """
+    uid = g.user.uid
+    with db.auto_commit():
+        user = User.query.filter_by(id=uid).first_or_404()
+        user.delete()
+    return DeleteSuccess()
+
+
+@api.route('/<int:uid>', methods=['PUT'])
+def super_update_user(uid):
+    return 'super update user'
+
+
+@api.route('', methods=['PUT'])
 def update_user():
-    return 'delete user'
+    return 'update user'
 
 # @api.route('/<int:uid>', methods=['DELETE'])
 # def delete_user():

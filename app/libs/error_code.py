@@ -13,8 +13,8 @@ __author__ = 'Cphayim'
 # 204 删除成功
 
 # 400 参数错误
-# 401 未授权
-# 403 禁止访问
+# 401 授权失败
+# 403 拒绝访问
 # 404 没有找到资源
 
 # 500 服务器未知错误
@@ -40,32 +40,41 @@ class DeleteSuccess(Success):
 
 class ParameterException(APIException):
     """
-    参数错误异常
+    参数错误
     """
     code = 400
     msg = 'invalid parameter'
     error_code = 1000
 
 
-class AuthException(APIException):
+class AuthFailed(APIException):
     """
-    授权异常
+    授权失败
     """
     code = 401
     msg = 'authorization failed'
     error_code = 1005
 
 
-class NotFoundException(APIException):
+class Forbidden(APIException):
     """
-    找不到资源异常
+    拒绝访问（权限不够）
+    """
+    code = 403
+    msg = 'forbidden, not in scope'
+    error_code = 1004
+
+
+class NotFound(APIException):
+    """
+    找不到资源
     """
     code = 404
     msg = 'the resource are not_found 0__0...'
     error_code = 1001
 
 
-class ServerException(APIException):
+class ServerError(APIException):
     """
     服务器未知异常
     """

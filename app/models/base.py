@@ -8,7 +8,7 @@ from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy as _SQLAlchemy, BaseQuery
 from sqlalchemy import Column, Integer, SmallInteger
 
-from app.libs.error_code import NotFoundException
+from app.libs.error_code import NotFound
 
 __author__ = 'Cphayim'
 
@@ -55,7 +55,7 @@ class Query(BaseQuery):
         """
         rv = self.get(ident)
         if not rv:
-            raise NotFoundException()
+            raise NotFound()
         return rv
 
     def first_or_404(self):
@@ -65,7 +65,7 @@ class Query(BaseQuery):
         """
         rv = self.first()
         if not rv:
-            raise NotFoundException()
+            raise NotFound()
         return rv
 
 

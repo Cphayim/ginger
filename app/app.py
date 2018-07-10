@@ -7,7 +7,7 @@ from datetime import date
 from flask import Flask as _Flask
 from flask.json import JSONEncoder as _JSONEncoder
 
-from app.libs.error_code import ServerException
+from app.libs.error_code import ServerError
 
 __author__ = 'Cphayim'
 
@@ -18,7 +18,7 @@ class JSONEncoder(_JSONEncoder):
             return dict(o)
         if isinstance(o, date):
             return o.strftime('%Y-%m-%d')
-        raise ServerException()
+        raise ServerError()
 
 
 class Flask(_Flask):

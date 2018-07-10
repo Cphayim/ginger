@@ -4,11 +4,12 @@
 """
 from collections import namedtuple
 
-from flask import current_app, g
+from flask import current_app, g, request
 from flask_httpauth import HTTPBasicAuth
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired
 
-from app.libs.error_code import AuthException
+from app.libs.error_code import AuthFailed, Forbidden
+from app.libs.scope import is_in_scope
 
 __author__ = 'Cphayim'
 
@@ -46,11 +47,18 @@ def verify_auth_token(token):
         data = s.loads(token)
     except BadSignature:
         # 令牌无效
-        raise AuthException(msg='token is invalid', error_code=1002)
+        raise AuthFailed(msg='token is invalid', error_code=1002)
     except SignatureExpired:
         # 令牌过期
-        raise AuthException(msg='token is expired', error_code=1003)
+        raise AuthFailed(msg='token is expired', error_code=1003)
 
     uid = data['uid']
     ac_type = data['type']
-    return User(uid, ac_type, '')
+    scope = data['scope']
+
+    # 当前用户是否有权限访问视图函数
+    allow = is_in_scope(scope, request.endpoint)
+    if not allow:
+        raise Forbidden()
+
+    return User(uid, ac_type, scope)

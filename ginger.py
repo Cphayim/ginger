@@ -7,7 +7,7 @@ from werkzeug.exceptions import HTTPException
 
 from app import create_app
 from app.libs.error import APIException
-from app.libs.error_code import ServerException
+from app.libs.error_code import ServerError
 
 __author__ = 'Cphayim'
 
@@ -28,7 +28,7 @@ def framework_error(e):
         # 这里多数是服务端异常，可以做 log
         if not app.config.get('DEBUG'):
             # 非调试模式，返回概要信息
-            return ServerException()
+            return ServerError()
         else:
             # 调试模式，返回完整错误堆栈
             raise e
