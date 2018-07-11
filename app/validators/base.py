@@ -15,8 +15,11 @@ class BaseForm(Form):
     def __init__(self, data=None):
         # 如果外部没有传入 data，从 request 中获取请求参数
         if not data:
-            data = request.json
-        super(BaseForm, self).__init__(data=data)
+            # 获取带 content-type: application/json 头的请求体中的 json 数据，并静默（不抛出异常）
+            data = request.get_json(silent=True)
+            # 获取 url 中的 query 参数
+            args = request.args.to_dict()
+        super(BaseForm, self).__init__(data=data, **args)
 
     def validate_for_api(self):
         """

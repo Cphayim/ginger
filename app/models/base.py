@@ -100,6 +100,21 @@ class Base(db.Model):
             if hasattr(self, key) and key != 'id':
                 setattr(self, key, value)
 
+    def keys(self):
+        return getattr(self, 'fields', [])
+
+    def hide(self, *keys):
+        """ 隐藏部分字段的显示（仅影响 keys 中返回的字段名）"""
+        for key in keys:
+            self.fields.remove(key)
+        return self
+
+    def append(self, keys):
+        """ 添加部分字段的显示（仅影响 keys 中返回的字段名）"""
+        for key in keys:
+            self.fileds.add(key)
+        return self
+
     def delete(self):
         """
         标记删除数据

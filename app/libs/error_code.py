@@ -47,6 +47,14 @@ class ParameterException(APIException):
     error_code = 1000
 
 
+class DuplicateGift(ParameterException):
+    """
+    重复的礼物
+    """
+    msg = 'the current book has already in gift'
+    error_code = 2001
+
+
 class AuthFailed(APIException):
     """
     授权失败

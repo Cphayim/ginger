@@ -8,10 +8,10 @@ __author__ = 'Cphayim'
 
 # Scope 基类
 class Scope:
-    allow_api = {}
-    allow_module = {}
+    allow_api = set()
+    allow_module = set()
 
-    forbidden = {}
+    forbidden = set()
 
     def __add__(self, other):
         """
@@ -22,7 +22,6 @@ class Scope:
         """
         if not isinstance(other, Scope):
             raise TypeError('other must be a Scope instance or subclass instance')
-
         self.allow_api = self.allow_api | other.allow_api
         self.allow_module = self.allow_module | other.allow_module
         self.forbidden = self.forbidden | other.forbidden
@@ -32,17 +31,18 @@ class Scope:
 
 # 用户组
 class UserScope(Scope):
-    # allow_api = {
-    #     'v1.user+get_user',
-    #     'v1.user+delete_user'
-    # }
-    forbidden = {
-        'v1.user+super_get_user',
-        'v1.user+super+delete_user'
+    allow_api = {
+        'v1.user+get_user',
+        'v1.user+delete_user',
+        'v1.gift+create'
     }
-
-    def __init__(self):
-        self + AdminScope()
+    # forbidden = {
+    #     'v1.user+super_get_user',
+    #     'v1.user+super+delete_user'
+    # }
+    #
+    # def __init__(self):
+    #     self + AdminScope()
 
 
 # 管理员组

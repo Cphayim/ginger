@@ -66,3 +66,11 @@ class UserEmailForm(ClientTypeForm):
     def validate_account(self, value):
         if User.query.filter_by(email=value.data).first():
             raise ValidationError(message='the email of account already exists')
+
+
+class BookSearchForm(BaseForm):
+    q = StringField(validators=[DataRequired()])
+
+
+class TokenForm(BaseForm):
+    token = StringField(validators=[DataRequired()])
